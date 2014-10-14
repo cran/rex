@@ -1,0 +1,12 @@
+---
+title: "Non-Standard Evaluation in Rex"
+author: "Jim Hester"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Non-Standard Evaluation in Rex}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+`Rex()` calls use non-standard evaluation (NSE)
