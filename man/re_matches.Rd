@@ -3,7 +3,8 @@
 \alias{re_matches}
 \title{Match function}
 \usage{
-re_matches(data, pattern, global = FALSE, options = NULL, ...)
+re_matches(data, pattern, global = FALSE, options = NULL,
+  locations = FALSE, ...)
 }
 \arguments{
 \item{data}{character vector to match against}
@@ -13,6 +14,10 @@ re_matches(data, pattern, global = FALSE, options = NULL, ...)
 \item{global}{use global matching}
 
 \item{options}{regular expression options}
+
+\item{locations}{rather than returning the values of the matched (or
+captured) string, return a \code{data.frame} of the match locations in the
+string.}
 
 \item{...}{options passed to regexpr or gregexpr}
 }
