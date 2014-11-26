@@ -10,7 +10,7 @@
 
 <meta name="author" content="Jim Hester" />
 
-<meta name="date" content="2014-10-13" />
+<meta name="date" content="2014-11-26" />
 
 <title>URL Validation</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">URL Validation</h1>
 <h4 class="author"><em>Jim Hester</em></h4>
-<h4 class="date"><em>2014-10-13</em></h4>
+<h4 class="date"><em>2014-11-26</em></h4>
 </div>
 
 
@@ -69,7 +69,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>However if you re-create the regex with <code>rex</code> it is much easier to understand and modify later if needed.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rex)
 
-valid_chars &lt;-<span class="st"> </span><span class="kw">rex</span>(<span class="kw">one_of</span>(<span class="kw">regex</span>(<span class="st">'a-z0-9\u00a1-\uffff'</span>)))
+valid_chars &lt;-<span class="st"> </span><span class="kw">rex</span>(<span class="kw">except_some_of</span>(<span class="st">&quot;.&quot;</span>, <span class="st">&quot;/&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="st">&quot;-&quot;</span>))
 
 re &lt;-<span class="st"> </span><span class="kw">rex</span>(
   start,
@@ -129,7 +129,6 @@ re &lt;-<span class="st"> </span><span class="kw">rex</span>(
   <span class="st">&quot;http://foo.bar/?q=Test%20URL-encoded%20stuff&quot;</span>,
   <span class="st">&quot;http://مثال.إختبار&quot;</span>,
   <span class="st">&quot;http://例子.测试&quot;</span>,
-  <span class="st">&quot;http://उदाहरण.परीक्षा&quot;</span>,
   <span class="st">&quot;http://-.~_!$&amp;'()*+,;=:%40:80%2f::::::@example.com&quot;</span>,
   <span class="st">&quot;http://1337.net&quot;</span>,
   <span class="st">&quot;http://a.b-c.de&quot;</span>,

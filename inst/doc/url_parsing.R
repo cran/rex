@@ -4,7 +4,7 @@
 ## ----url_parsing_url-----------------------------------------------------
 library(rex)
 
-valid_chars <- rex(one_of(regex('a-z0-9\u00a1-\uffff')))
+valid_chars <- rex(except_some_of(".", "/", " ", "-"))
 
 re <- rex(
   start,
@@ -65,7 +65,6 @@ good <- c("http://foo.com/blah_blah",
   "http://foo.bar/?q=Test%20URL-encoded%20stuff",
   "http://مثال.إختبار",
   "http://例子.测试",
-  "http://उदाहरण.परीक्षा",
   "http://-.~_!$&'()*+,;=:%40:80%2f::::::@example.com",
   "http://1337.net",
   "http://a.b-c.de",

@@ -18,6 +18,7 @@ single_shortcuts <- list(
   space = character_class("[:space:]"),
   upper = character_class("[:upper:]"),
   xdigit = character_class("[:xdigit:]"),
+  newline = regex("\\R"),
 
   single_quote = character_class("'"),
   double_quote = character_class("\""),
@@ -37,19 +38,28 @@ basic_shortcuts <- list(
 )
 
 inverse <- function(x) {
-  x[] <- lapply(x, function(xx) { val = paste0("^", xx); class(val) <- class(xx); val })
+  x[] <- lapply(x, function(xx) {
+    val <- paste0("^", xx); class(val) <- class(xx)
+    val
+  })
   names(x) <- paste0("non_", names(x))
   x
 }
 
 plural <- function(x) {
-  x[] <- lapply(x, function(xx) { val = paste0(escape(xx), "+"); class(val) <- "regex"; val })
+  x[] <- lapply(x, function(xx) {
+    val <- paste0(escape(xx), "+"); class(val) <- "regex"
+    val
+  })
   names(x) <- paste0(names(x), "s")
   x
 }
 
 multiple <- function(x) {
-  x[] <- lapply(x, function(xx) { val = paste0(escape(xx), "*"); class(val) <- "regex"; val })
+  x[] <- lapply(x, function(xx) {
+    val <- paste0(escape(xx), "*"); class(val) <- "regex"
+    val
+  })
   names(x) <- paste0("any_", names(x), "s")
   x
 }
