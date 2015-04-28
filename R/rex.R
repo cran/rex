@@ -22,9 +22,7 @@ rex_ <- function(args, env = parent.frame()) {
 
   # this needs the as.list because eval only looks at the enclos if envir is
   # not an environment
-  output <- regex(p(escape(lazyeval::lazy_eval(args, as.list(.rex$env)))))
-
-  return(output)
+  regex(p(escape(lazyeval::lazy_eval(args, as.list(.rex$env)))))
 }
 
 #' @describeIn regex coerce regex object to a character
@@ -41,11 +39,6 @@ as.regex <- function(x, ...) UseMethod("as.regex")
 #' @export
 #' @describeIn as.regex Simply escape the Object.
 as.regex.default <- function(x, ...) escape(x)
-
-#' @describeIn regex concatenate regex
-c.regex <- function(...) {
-  p(escape_dots(...))
-}
 
 #' @export
 #' @describeIn regex Print regex object

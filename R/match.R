@@ -16,7 +16,7 @@
 #' @seealso \code{\link{regexp}} Section "Perl-like Regular Expressions" for a
 #' discussion of the supported options
 #' @examples
-#' string = c("this is a", "test string")
+#' string <- c("this is a", "test string")
 #' re_matches(string, rex("test")) # FALSE FALSE
 #'
 #' # named capture
@@ -32,7 +32,7 @@
 #' # 1 test
 #' # 2 <NA>
 #' @export
-re_matches <- function(data, pattern, global = FALSE, options = NULL, locations = FALSE, ...) {
+re_matches <- matches <- function(data, pattern, global = FALSE, options = NULL, locations = FALSE, ...) {
 
   pattern <- add_options(pattern, options)
 
@@ -63,29 +63,32 @@ re_matches <- function(data, pattern, global = FALSE, options = NULL, locations 
 
     not_matched <- starts == -1L
 
-    if(!locations) {
-      strings <- substring(string, starts, ends)
+    strings <- substring(string, starts, ends)
 
-      strings[not_matched] <- NA_integer_
+    strings[not_matched] <- NA_character_
 
-      res <- matrix(ncol = ncol(starts), strings)
+    res <- matrix(ncol = ncol(starts), strings)
 
-      colnames(res) <- auto_name(attr(match, "capture.names"))
+    nms <- auto_name(attr(match, "capture.names"))
 
-      as.data.frame(res, stringsAsFactors = FALSE)
+    if (!locations) {
+      colnames(res) <- nms
+      return(as.data.frame(res, stringsAsFactors = FALSE, check.names = FALSE))
     }
-    else {
-      starts[not_matched] <- NA_integer_
 
-      ends[not_matched] <- NA_integer_
+    starts[not_matched] <- NA_integer_
 
-      nms <- auto_name(attr(match, "capture.names"))
+    ends[not_matched] <- NA_integer_
 
-      res <- data.frame(matrix(ncol = ncol(starts), starts), matrix(ncol = ncol(ends), ends))
+    indexes <- unlist(lapply(seq_len(ncol(res)), function(x) {
+        seq(x, b = ncol(res), length.out = 3)
+    }))
 
-      colnames(res) <- paste(sep=".", rep(nms, each = 2L), c("start", "end"))
-      res
-    }
+    full <- data.frame(res, starts, ends, stringsAsFactors = FALSE, check.names = FALSE)[, indexes, drop = FALSE]
+    full_names <- unlist(Map(function(name) c(name, paste(sep=".", name, c("start", "end"))), nms, USE.NAMES=F))
+    colnames(full) <- full_names
+
+    full
   }
 
   if(global %==% TRUE) {
@@ -96,7 +99,7 @@ re_matches <- function(data, pattern, global = FALSE, options = NULL, locations 
   }
 }
 
-#' Substitution function
+#' Substitute regular expressions in a string with another string.
 #'
 #' @param data character vector to substitute
 #' @param pattern regular expression to match
@@ -107,26 +110,21 @@ re_matches <- function(data, pattern, global = FALSE, options = NULL, locations 
 #' @seealso \code{\link{regexp}} Section "Perl-like Regular Expressions" for a
 #' discussion of the supported options
 #' @examples
-#' string = c("this is a Test", "string")
+#' string <- c("this is a Test", "string")
 #' re_substitutes(string, "test", "not a test", options = "insensitive")
 #' re_substitutes(string, "i", "x", global = TRUE)
+#' re_substitutes(string, "(test)", "not a \\1", options = "insensitive")
 #' @export
-re_substitutes <- function(data, pattern, replacement, global = FALSE, options = NULL, ...) {
-
+re_substitutes <- substitutes <- function(data, pattern, replacement, global = FALSE, options = NULL, ...) {
   pattern <- add_options(pattern, options)
-
-  if(global) {
-    gsub(x = data, pattern = pattern, replacement = replacement, perl = TRUE, ...)
-  }
-  else {
-    sub(x = data, pattern = pattern, replacement = replacement, perl = TRUE, ...)
-  }
+  method <- if (isTRUE(global)) gsub else sub
+  method(x = data, pattern = pattern, replacement = replacement, perl = TRUE, ...)
 }
 
-add_options <-  function(pattern, options) {
+add_options <- function(pattern, options) {
   if (!is.null(options)) {
     options <- match_args(options, names(option_map))
-    pattern <- p("(?", p(option_map[options]), ")", pattern)
+    p("(?", p(option_map[options]), ")", pattern)
   }
   else {
     pattern
@@ -135,7 +133,7 @@ add_options <-  function(pattern, options) {
 
 match_args <- function(arg, choices) {
   matches <- pmatch(arg, choices)
-  if(any(is.na(matches))){
+  if (any(is.na(matches))) {
     stop(gettextf("'arg' should be one of %s", paste(dQuote(choices),
           collapse = ", ")), domain = NA)
   }
@@ -159,6 +157,6 @@ auto_name <- function(names) {
   if (all(!missing)) {
     return(names)
   }
-  names[ names == "" ] <- seq_along(names)[ names == "" ]
+  names[missing] <- seq_along(names)[missing]
   names
 }
