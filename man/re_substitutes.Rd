@@ -2,6 +2,8 @@
 % Please edit documentation in R/match.R
 \name{re_substitutes}
 \alias{re_substitutes}
+\alias{substitutes}
+\alias{s}
 \title{Substitute regular expressions in a string with another string.}
 \usage{
 re_substitutes(data, pattern, replacement, global = FALSE, options = NULL,
@@ -33,4 +35,3 @@ re_substitutes(string, "(test)", "not a \\\\1", options = "insensitive")
 \code{\link{regexp}} Section "Perl-like Regular Expressions" for a
 discussion of the supported options
 }
-

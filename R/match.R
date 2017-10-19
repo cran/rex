@@ -31,7 +31,8 @@
 #' #      1
 #' # 1 test
 #' # 2 <NA>
-#' @export
+#' @aliases matches m
+#' @export re_matches matches m
 re_matches <- matches <- m <- function(data, pattern, global = FALSE, options = NULL, locations = FALSE, ...) {
 
   pattern <- add_options(pattern, options)
@@ -81,7 +82,7 @@ re_matches <- matches <- m <- function(data, pattern, global = FALSE, options = 
     ends[not_matched] <- NA_integer_
 
     indexes <- unlist(lapply(seq_len(ncol(res)), function(x) {
-        seq(x, b = ncol(res), length.out = 3)
+        seq(x, by = ncol(res), length.out = 3)
     }))
 
     full <- data.frame(res, starts, ends, stringsAsFactors = FALSE, check.names = FALSE)[, indexes, drop = FALSE]
@@ -114,7 +115,8 @@ re_matches <- matches <- m <- function(data, pattern, global = FALSE, options = 
 #' re_substitutes(string, "test", "not a test", options = "insensitive")
 #' re_substitutes(string, "i", "x", global = TRUE)
 #' re_substitutes(string, "(test)", "not a \\1", options = "insensitive")
-#' @export
+#' @aliases substitutes s
+#' @export re_substitutes substitutes s
 re_substitutes <- substitutes <- s <- function(data, pattern, replacement, global = FALSE, options = NULL, ...) {
   pattern <- add_options(pattern, options)
   method <- if (isTRUE(global)) gsub else sub

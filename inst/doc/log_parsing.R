@@ -5,7 +5,7 @@ library(knitr)
 library(ggplot2)
 
 ## ----show.warnings=FALSE-------------------------------------------------
-parsed <- scan('NASA.txt', what = "character", sep = "\n") %>%
+parsed <- scan("NASA.txt", what = "character", sep = "\n") %>%
   re_matches(
     rex(
 
@@ -21,7 +21,7 @@ parsed <- scan('NASA.txt', what = "character", sep = "\n") %>%
       # Get the filetype of the request if requesting a file
       maybe(
         non_spaces, ".",
-        capture(name = 'filetype',
+        capture(name = "filetype",
           except_some_of(space, ".", "?", double_quote)
         )
       )
@@ -34,11 +34,6 @@ parsed <- scan('NASA.txt', what = "character", sep = "\n") %>%
 kable(head(parsed, n = 10))
 
 ## ----FALSE, fig.show='hold', warning = FALSE, message = FALSE------------
-x_angle <- theme(axis.text.x = element_text(size = 7,
-      hjust = 0,
-      vjust = 1,
-      angle = 310))
-
-ggplot(na.omit(parsed)) + geom_histogram(aes(x=filetype)) + x_angle
+ggplot(na.omit(parsed)) + stat_count(aes(x=filetype))
 ggplot(na.omit(parsed)) + geom_histogram(aes(x=time)) + ggtitle("Requests over time")
 

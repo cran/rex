@@ -2,6 +2,8 @@
 % Please edit documentation in R/match.R
 \name{re_matches}
 \alias{re_matches}
+\alias{matches}
+\alias{m}
 \title{Match function}
 \usage{
 re_matches(data, pattern, global = FALSE, options = NULL,
@@ -53,4 +55,3 @@ re_matches(string, rex(capture("test")))
 \code{\link{regexp}} Section "Perl-like Regular Expressions" for a
 discussion of the supported options
 }
-
