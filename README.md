@@ -1,6 +1,10 @@
 # Rex
+
+<!-- badges: start -->
 [![Build Status](https://travis-ci.org/kevinushey/rex.png?branch=master)](https://travis-ci.org/kevinushey/rex)
 [![codecov.io](https://codecov.io/github/kevinushey/rex/coverage.svg?branch=master)](https://codecov.io/github/kevinushey/rex?branch=master)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+<!-- badges: end -->
 
 ### Friendly Regular Expressions
 
@@ -44,8 +48,7 @@ expression, they are much more readable and maintainable.
 ## Installation
 
 ```r
-library(devtools)
-install_github("kevinushey/rex")
+install.packages("rex")
 ```
 
 ## Usage
